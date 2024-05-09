@@ -2,11 +2,28 @@ import { View,StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingVie
 import React, { useState } from 'react'
 import { defaultStyles } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
-import { Link } from 'expo-router'
+import { useSignUp } from '@clerk/clerk-expo';
+import { Link, useRouter } from 'expo-router'
 
 const Page = () => {
 
-  const onSignup = async() => {}
+  const { signUp } = useSignUp();
+  const router = useRouter();
+
+  const onSignup = async () => {
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+    try {
+      await signUp!.create({
+        phoneNumber: fullPhoneNumber,
+      });
+      signUp!.preparePhoneNumberVerification();
+
+      router.push({ pathname: '/verify/[phone]', params: { phone: fullPhoneNumber } });
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
   const [countryCode, setCountryCode] = useState('+91')
   const [phoneNumber, setPhoneNumber] = useState('')
 

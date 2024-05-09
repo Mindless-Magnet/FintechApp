@@ -10,6 +10,29 @@ import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { ClerkProvider } from '@clerk/clerk-expo';
+import * as SecureStore from "expo-secure-store";
+
+const EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+ 
+const tokenCache = {
+  getToken(key: string) {
+    try {
+     return SecureStore.getItemAsync(key);
+    }
+    catch (err) {
+     return null;
+    }
+  },
+  saveToken(key: string, value: string) {
+    try {
+     return SecureStore.setItemAsync(key, value);
+    }
+    catch (err) {
+     return null;
+    }
+  },
+};
 
 
 export {
@@ -91,10 +114,14 @@ const InitialLayout = () => {
 const RootLayoutNav = () => {
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <StatusBar style='light'/>
-      <InitialLayout />
-    </GestureHandlerRootView>
+    <ClerkProvider 
+      publishableKey={EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY} 
+      tokenCache={tokenCache}>
+        <GestureHandlerRootView style={{flex: 1}}>
+          <StatusBar style='light'/>
+          <InitialLayout />
+        </GestureHandlerRootView>
+    </ClerkProvider>
   )
 
 }
