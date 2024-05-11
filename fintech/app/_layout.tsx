@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { ClerkProvider } from '@clerk/clerk-expo';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import * as SecureStore from "expo-secure-store";
 
 
@@ -54,6 +54,7 @@ const InitialLayout = () => {
   });
 
   const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -65,6 +66,10 @@ const InitialLayout = () => {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    console.log('isSignedIn', isSignedIn);
+  }, [isSignedIn]);
 
   if (!loaded) {
     return null;
@@ -108,6 +113,17 @@ const InitialLayout = () => {
           presentation: 'modal',
 
         }}/>
+        <Stack.Screen name='verify/[phone]' options={{ 
+          title: '',
+          headerBackTitle: '',
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name='arrow-back' size={30} color={Colors.dark}/>
+            </TouchableOpacity>
+          )
+        }} />
 
         </Stack>
 

@@ -19,12 +19,6 @@ const Page = () => {
   
   return (
     <View style={styles.container}>
-          {/* {assets && (
-          <Video
-            source={{ uri: assets[0].uri}}
-            style={styles.video}
-          />
-          )} */}
           {assets && (
           <Video
             resizeMode="cover"
@@ -39,7 +33,7 @@ const Page = () => {
 
           <View style={styles.buttons}>
             <Link 
-            href={'/login'} 
+            href={'/login'} //change this to /login
             style={[defaultStyles.pillButton, {flex: 1, backgroundColor: Colors.dark}]} 
             asChild>
               <TouchableOpacity>
