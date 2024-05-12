@@ -31,7 +31,7 @@
     "plugins": [
       ["expo-router",
       {
-        "origin":"https://fintech-frontend.vercel.app",
+        "origin":""
       }],
       "expo-secure-store"
     ],
