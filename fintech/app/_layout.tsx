@@ -16,6 +16,7 @@ const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { UserInactivityProvider } from '@/context/UserInactivity';
 
 const queryClient = new QueryClient();
 
@@ -78,7 +79,7 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === '(authenticated)';
 
     if(isSignedIn && !inAuthGroup) {
-      router.replace('/(authenticated)/(tabs)/crypto');
+      router.replace('/(authenticated)/(tabs)/crypto/');
     }
     else if(!isSignedIn && inAuthGroup) {
       router.replace('/');
@@ -147,6 +148,33 @@ const InitialLayout = () => {
           headerShown: false,
         }}/>
 
+        <Stack.Screen name='(authenticated)/crypto/[id]'
+        options={{
+          title: ' ',
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name='arrow-back' size={30} color={Colors.dark}/>
+            </TouchableOpacity>
+          ),
+          headerLargeTitle: true,
+          headerTitleAlign: 'center',
+          headerTransparent: true,
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+            <TouchableOpacity>
+              <Ionicons name='notifications-outline' color={Colors.dark} size={25}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name='star-outline' color={Colors.dark} size={25}/>
+            </TouchableOpacity>
+            </View>
+          )
+        }} />
+
+        <Stack.Screen name='(authenticated)/(modals)/lock' options={{
+          headerShown: false
+        }}/>
+        
         </Stack>
 
   );
@@ -159,12 +187,14 @@ const RootLayoutNav = () => {
     <ClerkProvider 
       publishableKey={CLERK_PUBLISHABLE_KEY!} 
       tokenCache={tokenCache}>
-        <QueryClientProvider client={queryClient}>
-          <GestureHandlerRootView style={{flex: 1}}>
-            <StatusBar style='light'/>
-            <InitialLayout />
-          </GestureHandlerRootView>
-        </QueryClientProvider>
+      <GestureHandlerRootView style={{flex: 1}}>
+          <QueryClientProvider client={queryClient}>
+            <UserInactivityProvider>
+              <StatusBar style='light'/>
+              <InitialLayout />
+            </UserInactivityProvider>
+          </QueryClientProvider>
+      </GestureHandlerRootView>
     </ClerkProvider>
   )
 

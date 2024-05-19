@@ -57,7 +57,9 @@ const Page = () => {
             title: 'Crypto',
             tabBarIcon: ({size, color}) => (
                 <FontAwesome name='bitcoin' size={size} color={color}/>
-            )
+            ),
+            header: () => <CustomHeader/>,
+            headerTransparent: true
         }}/>
         <Tabs.Screen name='lifestyle' options={{
             title: 'Lifestyle',

@@ -20,10 +20,10 @@ export interface Currency {
 }
 
 interface Quote {
-  USD: USD;
+  EUR: EUR;
 }
 
-interface USD {
+interface EUR {
   price: number;
   volume_24h: number;
   volume_change_24h: number;
